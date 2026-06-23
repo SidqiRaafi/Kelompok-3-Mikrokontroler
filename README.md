@@ -48,6 +48,12 @@
   ## Prototype Final
   <br/><br/><br/>
 <br/>
+  ## Final Produk
+  <br/><br/><br/>
+<br/>
+  ## Kesimpulan
+  <br/><br/><br/>
+<br/>
   ## Kontributor
 - [@Sidqi Raafi Al Fauzan](https://github.com/SidqiRaafi) - 23552011395
 - [@Muhammad Rizal Afrizal](https://github.com/Afrizal8) - 23552011376 
