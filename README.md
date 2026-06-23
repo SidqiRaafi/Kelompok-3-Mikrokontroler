@@ -9,7 +9,7 @@
   [![HTML5](https://img.shields.io/badge/Dashboard-FF5722?style=for-the-badge&logo=html5&logoColor=white)](#)
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
-  <img src="docs/img/proto.webp" alt="Prototype" width="670"/><br/>**Prototype Sistem Deteksi Kebocoran Gas**
+  <img src="docs/img/proto.webp" alt="Prototype" width="670"/><br/>**Prototype Sistem Deteksi Kebocoran Gas di Wokwi**
   
 | Komponen                    | Kuantitas | Penjelasan                                                                 |
 | :-------------------------- | :-------: | :------------------------------------------------------------------------- |
