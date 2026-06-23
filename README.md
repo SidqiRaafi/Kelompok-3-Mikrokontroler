@@ -24,3 +24,16 @@
 
 #
 </div>
+
+  # Placeholder 
+  <br/><br/><br/>
+  # Placeholder
+  <br/><br/><br/>
+  # Placeholder
+  <br/><br/><br/>
+  # Placeholder
+  <br/><br/><br/>
+  # Kontributor
+- [@Sidqi Raafi Al Fauzan](https://github.com/SidqiRaafi) - 23552011395
+- [@Muhammad Rizal Afrizal](https://github.com/Afrizal8) - 23552011376 
+- [@Ardika Nurdiansyah](https://github.com/ardikaanurdiansyah) - 23552011311
