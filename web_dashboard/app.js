@@ -191,7 +191,7 @@ function onGasValue(value) {
   drawSparkline();
 
   // Toggle kebocoran
-  const isLeak = value > THRESHOLD;
+  const isLeak = value >= THRESHOLD;
   leakToggle.className = `toggle-switch ${isLeak ? "toggle-danger" : "toggle-off"}`;
 
   lastUpdEl.textContent = `Diperbarui pukul ${formatTime(new Date())}`;
