@@ -88,8 +88,9 @@ https://github.com/SidqiRaafi/Kelompok-3-Mikrokontroler/blob/11510bfc183ed84b13a
 - Kabel jumper
 
   ### Dokumentasi Rangkaian
-  <img width="1200" height="1600" alt="WhatsApp Image 2026-06-25 at 13 52 29" src="https://github.com/user-attachments/assets/fdfb0c93-e11a-49ee-9263-04355d1556bc" />
-<img width="1200" height="1600" alt="WhatsApp Image 2026-06-25 at 13 52 29 (1)" src="https://github.com/user-attachments/assets/275c4496-9431-46e7-b177-66db961daf5b" />
+  <p align="center">
+  <img width="450" alt="WhatsApp Image 2026-06-25 at 13 52 29" src="https://github.com/user-attachments/assets/fdfb0c93-e11a-49ee-9263-04355d1556bc" />
+<img width="450" alt="WhatsApp Image 2026-06-25 at 13 52 29 (1)" src="https://github.com/user-attachments/assets/275c4496-9431-46e7-b177-66db961daf5b" />
 
   <br/><br/><br/>
 <br/>
