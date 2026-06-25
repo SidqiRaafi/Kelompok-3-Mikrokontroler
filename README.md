@@ -47,7 +47,7 @@
   <p>Setelah logika dasar berjalan, sistem diubah menggunakan FreeRTOS agar pembacaan sensor tidak terganggu oleh proses lain. Program dipisah menjadi dua task mandiri yaitu GasTask dengan prioritas tertinggi bertugas membaca sensor, menentukan status kebocoran, dan mengendalikan LED dan buzzer untuk deteksi kebocoran, sementara StatusTask berprioritas rendah mengambil data terbaru dari queue dan menampilkannya ke Serial Monitor. Dengan pemisahan ini, alarm tetap responsif meskipun ada beban kerja lain dan pembacaan sensor tidak lagi harus menunggu proses logging selesai menghasilkan sistem yang lebih responsif.</p>
     
   ### Code Snippet
-  <placeholder>
+  https://github.com/SidqiRaafi/Kelompok-3-Mikrokontroler/blob/11510bfc183ed84b13ad66a08daaf8a23b0afe15/docs/code/prototype_FreeRTOS.ino#L16-L109
   </div>
 <br/>
 
@@ -59,15 +59,18 @@ disini Prioritas task tetap dipertahankan: GasTask (prioritas 3) fokus pada sens
 
   <div align="center">
     
-  <img src="docs/img/placeholder" alt="placeholder" width="670"/><br/>**Placeholder**<br/>
-  <img src="docs/img/placeholder" alt="placeholder" width="670"/><br/>**Placeholder**<br/>
-  <img src="docs/img/placeholder" alt="placeholder" width="670"/><br/>**Placeholder**<br/>
-  <img src="docs/img/placeholder" alt="placeholder" width="670"/><br/>**Placeholder**<br/>
+  <img src="docs/img/Broker Config.webp" alt="brokerconf" width="1024"/><br/>**Konfigurasi broker agar terhubung ke simulasi di wokwi**<br/><br/>
+  
+  <img src="docs/img/Subscription Config.webp" alt="subsconf" width="512"/><br/>**Konfigurasi subscriptions di broker**<br/><br/>
+  
+  <img src="docs/img/Sending Data to Broker.webp" alt="sendata" width="512"/><br/>**Simulasi di wokwi mengirimkan data ke broker**<br/><br/>
+  
+  <img src="docs/img/Data Received in Broker.webp" alt="receiveddata" width="512"/><br/>**Data yang diterima di broker**<br/>
   
   </div>
   
 ### Code Snippet
-<placeholder>
+https://github.com/SidqiRaafi/Kelompok-3-Mikrokontroler/blob/11510bfc183ed84b13ad66a08daaf8a23b0afe15/docs/code/prototype_FreeRTOS%2BMQTT.ino#L16-L177
 </div>
 <br/>
 
