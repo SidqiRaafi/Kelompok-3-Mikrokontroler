@@ -87,6 +87,8 @@ https://github.com/SidqiRaafi/Kelompok-3-Mikrokontroler/blob/11510bfc183ed84b13a
   - Data sensor berhasil dibaca melalui Serial Monitor.
 
  ## Code Snippet
+
+```cpp
 /*
  * ============================================================
  *  GAS LEAKAGE DETECTOR
@@ -164,6 +166,7 @@ if (detected) {
   delay(500);
 }
 }
+```
   <br/><br/><br/>
 <br/>
   ## Implementasi Web Interface
