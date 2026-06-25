@@ -85,19 +85,13 @@ https://github.com/SidqiRaafi/Kelompok-3-Mikrokontroler/blob/11510bfc183ed84b13a
   - Kondisi normal: LED hijau menyala.
   - Gas terdeteksi: LED merah menyala dan buzzer berbunyi.
   - Data sensor berhasil dibaca melalui Serial Monitor.
+  - Pembacaan sensor gas MQ2.
+  - Pengelolaan task menggunakan FreeRTOS.
+  - Pengiriman data sensor ke broker MQTT.
+  - Pengendalian LED indikator dan buzzer sebagai alarm.
 
-  ### Source Code
-
-Source code implementasi sistem deteksi kebocoran gas menggunakan ESP32, FreeRTOS, dan MQTT dapat diakses pada file berikut:
-
-- [gas_leakage_detector.ino](docs/code/gas_leakage_detector.ino/gas_leakage_detector.ino.ino)
-
-Implementasi ini mencakup:
-- Pembacaan sensor gas MQ2.
-- Pengelolaan task menggunakan FreeRTOS.
-- Pengiriman data sensor ke broker MQTT.
-- Pengendalian LED indikator dan buzzer sebagai alarm.
   
+    
   <br/><br/><br/>
 <br/>
   ## Implementasi Web Interface
