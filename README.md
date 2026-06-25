@@ -85,6 +85,13 @@ https://github.com/SidqiRaafi/Kelompok-3-Mikrokontroler/blob/11510bfc183ed84b13a
   - Kondisi normal: LED hijau menyala.
   - Gas terdeteksi: LED merah menyala dan buzzer berbunyi.
   - Data sensor berhasil dibaca melalui Serial Monitor.
+  - Pembacaan sensor gas MQ2.
+  - Pengelolaan task menggunakan FreeRTOS.
+  - Pengiriman data sensor ke broker MQTT.
+  - Pengendalian LED indikator dan buzzer sebagai alarm.
+
+  
+    
   <br/><br/><br/>
 <br/>
   ## Implementasi Web Interface
