@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gas Leak Detection System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+  </head>
+  <body>
+    <div class="dashboard">
+
+      <!-- Header -->
+      <header class="header">
+        <div class="header-brand">
+          <div class="brand-text">
+            <p class="eyebrow">ESP32 + FreeRTOS</p>
+            <h1 class="brand-title">Gas Leak Detector</h1>
+          </div>
+        </div>
+        <div class="conn-pill">
+          <span id="mqtt-status-dot" class="dot disconnected"></span>
+          <span id="mqtt-status-text">Terputus</span>
+        </div>
+      </header>
+
+      <!-- Main: 3-column -->
+      <main class="main-panel">
+
+        <!-- Stats -->
+        <aside class="stats-panel">
+          <div class="stat-item">
+            <span class="stat-lbl">Tertinggi</span>
+            <span id="max-value" class="stat-num stat-max">--</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-lbl">Terendah</span>
+            <span id="min-value" class="stat-num stat-min">--</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-lbl">Sekarang</span>
+            <span id="gas-value" class="stat-num stat-current">--</span>
+          </div>
+        </aside>
+
+        <!-- Gauge -->
+        <section class="gauge-section">
+          <svg class="gauge-svg" viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg" aria-label="Gauge konsentrasi gas">
+            <circle class="gauge-track" cx="140" cy="140" r="110" fill="none" stroke-width="10" stroke-dasharray="518.36 172.79" transform="rotate(135 140 140)" stroke-linecap="round" />
+            <line id="threshold-tick" x1="228" y1="73" x2="241" y2="62" stroke-width="1.5" stroke-linecap="round" />
+            <circle id="gauge-arc" cx="140" cy="140" r="110" fill="none" stroke-width="10" stroke-dasharray="0 691.15" transform="rotate(135 140 140)" stroke-linecap="round" />
+            <text id="gauge-num" x="140" y="132" text-anchor="middle" class="gauge-num">--</text>
+            <text x="140" y="156" text-anchor="middle" class="gauge-unit">Analog Value</text>
+            <text x="140" y="172" text-anchor="middle" class="gauge-max">/ 4095 max</text>
+          </svg>
+        </section>
+
+        <!-- Status -->
+        <aside class="status-panel">
+          <div class="status-item">
+            <div class="status-item-label">
+              <span class="status-lbl">Terhubung</span>
+            </div>
+            <div id="conn-toggle" class="toggle-switch toggle-off" role="status" aria-label="Status koneksi">
+              <div class="toggle-thumb"></div>
+            </div>
+          </div>
+          <div class="status-divider"></div>
+          <div class="status-item">
+            <div class="status-item-label">
+              <span class="status-lbl">Kebocoran</span>
+              <span class="status-lbl">Terdeteksi</span>
+            </div>
+            <div id="leak-toggle" class="toggle-switch toggle-off" role="status" aria-label="Status kebocoran">
+              <div class="toggle-thumb"></div>
+            </div>
+          </div>
+        </aside>
+
+      </main>
+
+      <!-- Chart -->
+      <section class="chart-section">
+        <div class="chart-header">
+          <span class="section-lbl">Riwayat 30 data terakhir</span>
+          <span class="thresh-lbl">— threshold 3000</span>
+        </div>
+        <canvas id="sparkline"></canvas>
+      </section>
+
+      <!-- Footer -->
+      <footer class="dash-footer">
+        <span id="freshness-dot" class="freshness-dot"></span>
+        <span id="last-update-text">Menunggu data pertama...</span>
+      </footer>
+
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>
