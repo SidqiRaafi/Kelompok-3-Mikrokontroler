@@ -1,5 +1,8 @@
 <div align="center">
 
+  <br/>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Arduino_Logo.svg" alt="Logo" width="200"/><br/>
+  
   # Sistem Deteksi Kebocoran Gas Secara Realtime Menggunakan ESP32, FreeRTOS, dan MQTT
   
   [![ESP32](https://img.shields.io/badge/ESP32-000000?style=for-the-badge&logo=espressif&logoColor=white)](https://www.espressif.com/en/products/socs/esp32)
@@ -32,7 +35,7 @@
   ## Prototype Awal
   <img src="docs/img/proto.webp" alt="Prototype" width="670"/><br/>**Prototype Pertama Sistem Deteksi Kebocoran Gas Menggunakan Wokwi**
   <div align="justify">
-  <p>Pada tahap awal, rancangan sistem dibuat dalam bentuk prototype menggunakan Wokwi sebagai simulator rangkaian berbasis ESP32. Prototype ini berfokus pada pembuatan minimum viable product (MVP) untuk membaca nilai analog dari sensor gas MQ-2, menyalakan LED hijau saat kondisi normal, serta mengaktifkan LED merah dan buzzer ketika nilai sensor melewati ambang batas. Pada versi ini, program masih berjalan dengan loop tunggal tanpa FreeRTOS dan belum terhubung ke broker MQTT, sehingga lebih mudah untuk menguji logika dasar deteksi kebocoran sebelum ditingkatkan menjadi arsitektur multitask dengan pengiriman data ke server.</p>
+  <p>Pada tahap awal, sistem dibuat sebagai prototype menggunakan Wokwi sebagai simulator ESP32. Fokusnya adalah membuat MVP yang bisa membaca nilai analog dari sensor MQ-2, menyalakan LED hijau saat kondisi normal, lalu mengaktifkan LED merah dan buzzer ketika nilai sensor mendeteksi gas yang melebihi batas atau treshold. Program pada tahap ini masih berjalan dengan satu loop() tunggal tanpa FreeRTOS dan belum terhubung ke MQTT, dan hanya cukup untuk memverifikasi logika deteksi dasar sebelum sistem dikembangkan lebih lanjut.</p>
     
   ### Code Snippet
   https://github.com/SidqiRaafi/Kelompok-3-Mikrokontroler/blob/58384752943e762da85316145fe5a0d2bd0d5b04/docs/code/prototype1.ino#L16-L72
@@ -40,15 +43,41 @@
 <br/>
 
   ## Prototype RTOS
-  <br/><br/><br/>
+  <div align="justify">
+  <p>Setelah logika dasar berjalan, sistem diubah menggunakan FreeRTOS agar pembacaan sensor tidak terganggu oleh proses lain. Program dipisah menjadi dua task mandiri yaitu GasTask dengan prioritas tertinggi bertugas membaca sensor, menentukan status kebocoran, dan mengendalikan LED dan buzzer untuk deteksi kebocoran, sementara StatusTask berprioritas rendah mengambil data terbaru dari queue dan menampilkannya ke Serial Monitor. Dengan pemisahan ini, alarm tetap responsif meskipun ada beban kerja lain dan pembacaan sensor tidak lagi harus menunggu proses logging selesai menghasilkan sistem yang lebih responsif.</p>
+    
+  ### Code Snippet
+  <placeholder>
+  </div>
 <br/>
+
   ## Prototype + MQTT
+  <div align="justify">
+  <p>Tahap ini menambahkan MQTTTask di atas program FreeRTOS yang sudah dibuat sebelumnya. Task baru ini mengelola koneksi WiFi di wokwi, koneksi ke broker di broker.emqx.io, dan pengiriman data secara berkala. Data dari sensor tetap dikemas dalam struct GasData dan dikirim lewat gasQueue, tugas MQTTTask cukup mengambil nilai terbaru dari antrian, menyusunnya menjadi payload JSON, lalu mempublikasikannya ke topik gasleak/data di broker menggunakan library tambahan di wokwi yaitu PubSubClient.
+
+disini Prioritas task tetap dipertahankan: GasTask (prioritas 3) fokus pada sensor dan alarm, MQTTTask (prioritas 2) mengurus koneksi jaringan, dan StatusTask (prioritas 1) menangani logging lokal. Hasilnya, sistem berkembang dari alarm lokal sederhana menjadi node sensor yang bisa dimonitor dari dashboard berbasis web yang akan di implementasikan.</p>
+
+  <div align="center">
+    
+  <img src="docs/img/placeholder" alt="placeholder" width="670"/><br/>**Placeholder**<br/>
+  <img src="docs/img/placeholder" alt="placeholder" width="670"/><br/>**Placeholder**<br/>
+  <img src="docs/img/placeholder" alt="placeholder" width="670"/><br/>**Placeholder**<br/>
+  <img src="docs/img/placeholder" alt="placeholder" width="670"/><br/>**Placeholder**<br/>
+  
+  </div>
+  
+### Code Snippet
+<placeholder>
+</div>
+<br/>
+
+  ## Implementasi menggunakan ESP32
   <br/><br/><br/>
 <br/>
-  ## Prototype Final
+  ## Implementasi Web Interface
   <br/><br/><br/>
 <br/>
-  ## Final Produk
+  ## Final Product
   <br/><br/><br/>
 <br/>
   ## Kesimpulan
