@@ -218,11 +218,11 @@ client.on("message", (_topic, message) => {
   try {
     const data = JSON.parse(raw);
     const value = Number(data.raw ?? data.gas_value ?? 0);
-    if (!isNaN(value)) onGasValue(value);
+    if (Number.isFinite(value)) onGasValue(value);
     else console.warn("[MQTT] Nilai gas tidak valid:", data);
   } catch {
     const value = Number(raw);
-    if (!isNaN(value)) onGasValue(value);
+    if (Number.isFinite(value)) onGasValue(value);
     else console.warn("[MQTT] Format tidak dikenali:", raw);
   }
 });
