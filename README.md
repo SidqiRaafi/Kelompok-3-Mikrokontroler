@@ -76,11 +76,12 @@ https://github.com/SidqiRaafi/Kelompok-3-Mikrokontroler/blob/11510bfc183ed84b13a
 
   ## Implementasi menggunakan ESP32
   
-  ### Dokumentasi Rangkaian
   <p align="center">
   <img width="400" alt="WhatsApp Image 2026-06-25 at 13 52 29" src="https://github.com/user-attachments/assets/fdfb0c93-e11a-49ee-9263-04355d1556bc" />
-<img width="400" alt="WhatsApp Image 2026-06-25 at 13 52 29 (1)" src="https://github.com/user-attachments/assets/275c4496-9431-46e7-b177-66db961daf5b" />
+  <img width="400" alt="WhatsApp Image 2026-06-25 at 13 52 29 (1)" src="https://github.com/user-attachments/assets/275c4496-9431-46e7-b177-66db961daf5b" />
 
+  <div align="justify">
+    
   ### Hasil Pengujian
   - Kondisi normal: LED hijau menyala.
   - Gas terdeteksi: LED merah menyala dan buzzer berbunyi.
@@ -90,10 +91,11 @@ https://github.com/SidqiRaafi/Kelompok-3-Mikrokontroler/blob/11510bfc183ed84b13a
   - Pengiriman data sensor ke broker MQTT.
   - Pengendalian LED indikator dan buzzer sebagai alarm.
 
-  
-    
-  <br/><br/><br/>
+  ### Code Snippet
+  https://github.com/SidqiRaafi/Kelompok-3-Mikrokontroler/blob/0b93523c0b2668e752f4256c9e159eaa945ab264/docs/code/gas_leakage_detector.ino/gas_leakage_detector.ino.ino#L16-L177
+  </div>
 <br/>
+
   ## Implementasi Web Interface
   <br/><br/><br/>
 <br/>
