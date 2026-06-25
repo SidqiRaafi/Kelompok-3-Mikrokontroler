@@ -70,7 +70,7 @@ window.addEventListener("resize", () => {
 
 // ── Gauge ─────────────────────────────────────────────────────────────────────
 function updateGauge(value) {
-  const v = Math.max(0, Math.min(value, ADC_MAX));
+  const v = Math.max(0, Math.min(Number(value), ADC_MAX));
   const filled = (v / ADC_MAX) * ARC_LEN;
   const gap = CIRC - filled;
   gaugeArc.setAttribute(
@@ -79,15 +79,15 @@ function updateGauge(value) {
   );
 
   const color =
-    value >= THRESHOLD
+    v >= THRESHOLD
       ? "var(--danger)"
-      : value >= Math.round(THRESHOLD * 0.65)
+      : v >= Math.round(THRESHOLD * 0.65)
         ? "var(--warning)"
         : "var(--safe)";
 
   gaugeArc.style.stroke = color;
   gaugeNum.style.fill = color;
-  gaugeNum.textContent = value;
+  gaugeNum.textContent = String(v);
 }
 
 // ── Sparkline ─────────────────────────────────────────────────────────────────
