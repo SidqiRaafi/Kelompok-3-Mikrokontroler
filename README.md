@@ -82,88 +82,19 @@ https://github.com/SidqiRaafi/Kelompok-3-Mikrokontroler/blob/11510bfc183ed84b13a
 <img width="400" alt="WhatsApp Image 2026-06-25 at 13 52 29 (1)" src="https://github.com/user-attachments/assets/275c4496-9431-46e7-b177-66db961daf5b" />
 
   ### Hasil Pengujian
-  Kondisi normal: LED hijau menyala.
-  Gas terdeteksi: LED merah menyala dan buzzer berbunyi.
-  Data sensor berhasil dibaca melalui Serial Monitor.
+  - Kondisi normal: LED hijau menyala.
+  - Gas terdeteksi: LED merah menyala dan buzzer berbunyi.
+  - Data sensor berhasil dibaca melalui Serial Monitor.
 
-  ### Code Program
-  /*
- * ============================================================
- *  GAS LEAKAGE DETECTOR
- *  ESP32-WROOM-32 + MQ2 + Buzzer + 2 LEDs
- * ============================================================
- *
- *  Wiring:
- *  ESP32 3V3   → MQ2 VCC
- *  ESP32 GND   → MQ2 GND, Buzzer(-), both LED cathodes
- *  ESP32 D34   → MQ2 OUT (analog)
- *  ESP32 D25   → Buzzer (+)
- *  ESP32 D26   → Green LED anode
- *  ESP32 D27   → Red LED anode
- * ============================================================
- */
+ ## Code Snippet
 
-#define MQ2_AO_PIN    34
-#define BUZZER_PIN    25
-#define LED_GREEN     26
-#define LED_RED       27
-
-#define THRESHOLD     950
-#define WARMUP_MS     5000
-#define BAUD_RATE     115200
-
+```cpp
+// Contoh kode
 void setup() {
-  Serial.begin(BAUD_RATE);
-
-  pinMode(BUZZER_PIN, OUTPUT);
-  pinMode(LED_GREEN, OUTPUT);
-  pinMode(LED_RED, OUTPUT);
-
-  digitalWrite(BUZZER_PIN, LOW);
-  digitalWrite(LED_GREEN, LOW);
-  digitalWrite(LED_RED, LOW);
-
-  Serial.println("Warming up sensor...");
-  delay(WARMUP_MS);
-
-  digitalWrite(LED_GREEN, HIGH);
-  Serial.println("Ready.");
-  Serial.println("------------------------------");
+  Serial.begin(115200);
 }
+```
 
-void loop() {
-  int raw = analogRead(MQ2_AO_PIN);
-  float voltage = raw * (3.3f / 4095.0f);
-  bool detected = (raw > THRESHOLD);
-
-  // Serial Monitor
-  Serial.print("RAW: ");
-  Serial.print(raw);
-  Serial.print(" | ");
-  Serial.print(voltage, 2);
-  Serial.print("V | ");
-  Serial.println(detected ? "*** GAS DETECTED ***" : "Normal");
-
-  // Alarm / Normal State
-  // Alarm / Normal State
-if (detected) {
-  digitalWrite(LED_GREEN, LOW);
-
-  digitalWrite(LED_RED, HIGH);
-  digitalWrite(BUZZER_PIN, HIGH);
-  delay(300);
-
-  digitalWrite(LED_RED, LOW);
-  digitalWrite(BUZZER_PIN, LOW);
-  delay(300);
-
-} else {
-  digitalWrite(LED_GREEN, HIGH);
-  digitalWrite(LED_RED, LOW);
-  digitalWrite(BUZZER_PIN, LOW);
-  delay(500);
-}
-}
   <br/><br/><br/>
 <br/>
   ## Implementasi Web Interface
