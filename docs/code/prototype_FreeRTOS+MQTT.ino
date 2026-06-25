@@ -49,28 +49,75 @@ QueueHandle_t gasQueue;
 WiFiClient    wifiClient;
 PubSubClient  mqttClient(wifiClient);
 
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "freertos/queue.h"
+#include <WiFi.h>
+#include <WiFiClientSecure.h> // WAJIB untuk HiveMQ Cloud
+#include <PubSubClient.h>
+
+// WiFi & MQTT config
+#define WIFI_SSID     "Wokwi-GUEST"
+#define WIFI_PASS     ""
+#define MQTT_BROKER   "a2b717741b664ec883fd2bf66d9eb680.s1.eu.hivemq.cloud"
+#define MQTT_PORT     8883
+#define MQTT_USER     "gass12"
+#define MQTT_PASS     "GasBocor123"
+#define MQTT_TOPIC    "gasleak/data"
+#define MQTT_CLIENT   "esp32-gasleak-01"
+
+// Pin & sensor config 
+#define MQ2_AO_PIN    34
+#define BUZZER_PIN    18
+#define LED_GREEN     17
+#define LED_RED       16
+
+#define THRESHOLD     3000
+#define WARMUP_MS     5000
+#define BAUD_RATE     115200
+
+// Shared data struct
+struct GasData {
+  int   raw;
+  float voltage;
+  bool  detected;
+};
+
+// Handles
+QueueHandle_t gasQueue;
+WiFiClientSecure wifiClient;
+PubSubClient  mqttClient(wifiClient);
+
 // WiFi connection
 void connectWiFi() {
   Serial.print("Connecting to WiFi");
   WiFi.begin(WIFI_SSID, WIFI_PASS, 6);
   while (WiFi.status() != WL_CONNECTED) {
     Serial.print(".");
-    delay(500);
+    vTaskDelay(pdMS_TO_TICKS(500));
   }
   Serial.println("\nWiFi connected: " + WiFi.localIP().toString());
+  
+  // Mengabaikan pengecekan sertifikat SSL
+  wifiClient.setInsecure();
 }
 
 // MQTT connection 
 void connectMQTT() {
   mqttClient.setServer(MQTT_BROKER, MQTT_PORT);
   while (!mqttClient.connected()) {
-    Serial.print("Connecting to MQTT...");
-    if (mqttClient.connect(MQTT_CLIENT)) {
+    Serial.print("Connecting to HiveMQ Cloud...");
+    
+    // Gunakan Client ID yang diacak agar koneksi stabil
+    String clientId = String(MQTT_CLIENT) + "-" + String(random(0xffff), HEX);
+    
+    // Menghubungkan menggunakan Username dan Password
+    if (mqttClient.connect(clientId.c_str(), MQTT_USER, MQTT_PASS)) {
       Serial.println("connected.");
     } else {
       Serial.print("failed, rc=");
       Serial.println(mqttClient.state());
-      delay(2000);
+      vTaskDelay(pdMS_TO_TICKS(2000));
     }
   }
 }
@@ -119,28 +166,34 @@ void statusTask(void *pvParameters) {
 
 // Task 3: MQTTTask (Priority 2)
 void mqttTask(void *pvParameters) {
-  connectWiFi();
-  connectMQTT();
-
   GasData data;
+  
   while (true) {
-    // Reconnect
-    if (!mqttClient.connected()) connectMQTT();
+    // Reconnect Network & MQTT secara aman di dalam FreeRTOS Loop
+    if (WiFi.status() != WL_CONNECTED) {
+      connectWiFi();
+    }
+    if (!mqttClient.connected()) {
+      connectMQTT();
+    }
+    
     mqttClient.loop();
 
-    if (xQueuePeek(gasQueue, &data, pdMS_TO_TICKS(1000)) == pdTRUE) {
-      // Build JSON payload
-      char payload[128];
-      snprintf(payload, sizeof(payload),
-        "{\"raw\":%d,\"voltage\":%.2f,\"status\":\"%s\",\"task\":\"GasTask\"}",
-        data.raw,
-        data.voltage,
-        data.detected ? "DANGER" : "SAFE"
-      );
+    if (mqttClient.connected()) {
+      if (xQueuePeek(gasQueue, &data, pdMS_TO_TICKS(1000)) == pdTRUE) {
+        // Build JSON payload
+        char payload[128];
+        snprintf(payload, sizeof(payload),
+          "{\"raw\":%d,\"voltage\":%.2f,\"status\":\"%s\",\"task\":\"GasTask\"}",
+          data.raw,
+          data.voltage,
+          data.detected ? "DANGER" : "SAFE"
+        );
 
-      mqttClient.publish(MQTT_TOPIC, payload);
-      Serial.print("[MQTTTask] Published: ");
-      Serial.println(payload);
+        mqttClient.publish(MQTT_TOPIC, payload);
+        Serial.print("[MQTTTask] Published: ");
+        Serial.println(payload);
+      }
     }
 
     vTaskDelay(pdMS_TO_TICKS(2000));  // publish setiap 2 sec
@@ -167,9 +220,10 @@ void setup() {
 
   gasQueue = xQueueCreate(1, sizeof(GasData));
 
+  // Memperbesar Stack Size untuk MQTTTask karena WiFiClientSecure memakan banyak memori
   xTaskCreate(gasTask,    "GasTask",    2048, NULL, 3, NULL);
   xTaskCreate(statusTask, "StatusTask", 2048, NULL, 1, NULL);
-  xTaskCreate(mqttTask,   "MQTTTask",   4096, NULL, 2, NULL);
+  xTaskCreate(mqttTask,   "MQTTTask",   8192, NULL, 2, NULL); 
 }
 
 void loop() {
