@@ -76,17 +76,6 @@ https://github.com/SidqiRaafi/Kelompok-3-Mikrokontroler/blob/11510bfc183ed84b13a
 
   ## Implementasi menggunakan ESP32
   
-  ### Hardware yang digunakan
-- Wemos D1 R32 ESP32
-- Sensor MQ2
-- Active Buzzer
-- LED Hijau
-- LED Merah
-- Breadboard
-- 2 × Resistor 220 Ω (pembatas arus LED)
-- Breadboard
-- Kabel jumper
-
   ### Dokumentasi Rangkaian
   <p align="center">
   <img width="400" alt="WhatsApp Image 2026-06-25 at 13 52 29" src="https://github.com/user-attachments/assets/fdfb0c93-e11a-49ee-9263-04355d1556bc" />
