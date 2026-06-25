@@ -108,9 +108,8 @@ void connectMQTT() {
   while (!mqttClient.connected()) {
     Serial.print("Connecting to HiveMQ Cloud...");
     
-    // Gunakan Client ID yang diacak agar koneksi stabil
-    String clientId = String(MQTT_CLIENT) + "-" + String(random(0xffff), HEX);
-    
+    // Gunakan Client ID unik berbasis MAC/eFuse agar tidak collision antar device
+    String clientId = String(MQTT_CLIENT) + "-" + String((uint32_t)(ESP.getEfuseMac() & 0xFFFFFFFF), HEX);
     // Menghubungkan menggunakan Username dan Password
     if (mqttClient.connect(clientId.c_str(), MQTT_USER, MQTT_PASS)) {
       Serial.println("connected.");
