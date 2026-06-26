@@ -1,23 +1,37 @@
 /* ── Reset ── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-/* ── Tokens ── */
+/* ── Design Tokens (palette: Black, Charcoal, Gray, Pale Blue, Beige, Taupe, Soft Green) ── */
 :root {
-  --ink:     #111111;
-  --sub:     #999999;
-  --rule:    #e8e8e8;
-  --safe:    #111111;
-  --danger:  #d0021b;
-  --warning: #c47f00;
-  --bg:      #ffffff;
+  /* Palette */
+  --black: #000000;
+  --charcoal: #73787c;
+  --gray: #c5c6c7;
+  --pale-blue: #d7e5f0;
+  --beige: #c9ad93;
+  --taupe: #554940;
+  --sgreen: #879a77;
+  --red: #c0392b;
 
-  --font-ui:   "Space Grotesk", system-ui, sans-serif;
+  /* Aliases */
+  --ink: var(--black);
+  --sub: var(--charcoal);
+  --rule: var(--gray);
+  --bg: #ffffff;
+
+  --font-ui: "Space Grotesk", system-ui, sans-serif;
   --font-data: "JetBrains Mono", "Courier New", monospace;
 }
 
 /* ── Base ── */
 body {
-  background: #f5f5f3;
+  background: var(--pale-blue);
   color: var(--ink);
   font-family: var(--font-ui);
   min-height: 100vh;
@@ -27,7 +41,7 @@ body {
   padding: 48px 16px 64px;
 }
 
-/* ── Dashboard ── */
+/* ── Dashboard card ── */
 .dashboard {
   width: 100%;
   max-width: 860px;
@@ -45,16 +59,10 @@ body {
   border-bottom: 1px solid var(--rule);
 }
 
-.header-brand { display: flex; align-items: center; gap: 14px; }
-
-.brand-icon {
-  width: 32px;
-  height: 32px;
+.header-brand {
   display: flex;
   align-items: center;
-  justify-content: center;
-  color: var(--ink);
-  flex-shrink: 0;
+  gap: 14px;
 }
 
 .eyebrow {
@@ -75,26 +83,60 @@ body {
   letter-spacing: -0.01em;
 }
 
-.conn-pill {
+/* Indikator koneksi MQTT di header */
+.header-conn {
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 0.65rem;
   font-weight: 500;
   color: var(--sub);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
 }
 
-.dot {
-  width: 6px;
-  height: 6px;
+/* ── LED dot ── */
+.led-dot {
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
+  background: var(--gray);
   flex-shrink: 0;
-  transition: background 0.3s;
+  transition:
+    background 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
-.connected    { background: #1a9c3e; }
-.disconnected { background: var(--danger); }
+/* Ukuran besar untuk panel kanan */
+.led-dot--lg {
+  width: 55px;
+  height: 55px;
+}
+
+/* Hijau menyala → terhubung */
+.led-dot.led-on-green {
+  background: var(--sgreen);
+  box-shadow:
+    0 0 0 3px rgba(135, 154, 119, 0.18),
+    0 0 10px rgba(135, 154, 119, 0.45);
+}
+
+/* Merah menyala → kebocoran terdeteksi */
+.led-dot.led-on-red {
+  background: var(--red);
+  box-shadow:
+    0 0 0 3px rgba(192, 57, 43, 0.18),
+    0 0 12px rgba(192, 57, 43, 0.5);
+  animation: led-blink 0.75s alternate infinite;
+}
+
+@keyframes led-blink {
+  from {
+    opacity: 0.25;
+  }
+  to {
+    opacity: 1;
+  }
+}
 
 /* ── Main panel: 3-column ── */
 .main-panel {
@@ -120,12 +162,10 @@ body {
   padding: 20px 0;
 }
 
-.stat-divider { height: 1px; background: var(--rule); }
-
-.stat-icon { display: flex; align-items: center; }
-.stat-icon--max  { color: var(--danger); }
-.stat-icon--min  { color: #1a9c3e; }
-.stat-icon--now  { color: var(--sub); }
+.stat-divider {
+  height: 1px;
+  background: var(--rule);
+}
 
 .stat-lbl {
   font-size: 0.55rem;
@@ -145,9 +185,15 @@ body {
   transition: color 0.3s;
 }
 
-.stat-max     { color: var(--danger); }
-.stat-min     { color: #1a9c3e; }
-.stat-current { color: var(--ink); }
+.stat-max {
+  color: var(--taupe);
+} /* Taupe   — nilai puncak */
+.stat-min {
+  color: var(--sgreen);
+} /* Soft Green — nilai teredah */
+.stat-current {
+  color: var(--ink);
+} /* Black   — nilai saat ini */
 
 /* ── Gauge (center) ── */
 .gauge-section {
@@ -157,18 +203,26 @@ body {
   padding: 32px 16px;
 }
 
-.gauge-svg { width: 100%; max-width: 270px; overflow: visible; }
+.gauge-svg {
+  width: 100%;
+  max-width: 270px;
+  overflow: visible;
+}
 
-.gauge-track { stroke: #efefef; }
+.gauge-track {
+  stroke: var(--gray);
+}
 
 #threshold-tick {
-  stroke: var(--warning);
-  opacity: 0.6;
+  stroke: var(--beige);
+  opacity: 0.7;
 }
 
 #gauge-arc {
-  stroke: var(--ink);
-  transition: stroke-dasharray 0.4s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.35s ease;
+  stroke: var(--sgreen);
+  transition:
+    stroke-dasharray 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    stroke 0.35s ease;
 }
 
 .gauge-num {
@@ -192,28 +246,30 @@ body {
 .gauge-max {
   font-family: var(--font-ui);
   font-size: 8px;
-  fill: #bbbbbb;
+  fill: var(--gray);
 }
 
-/* ── Status panel (right) ── */
+/* ── Status panel (right) — item: LED kebocoran ── */
 .status-panel {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 40px 36px 40px 28px;
+  align-items: center;
+  padding: 40px 28px;
   border-left: 1px solid var(--rule);
 }
 
 .status-item {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 20px 0;
+  align-items: center;
+  gap: 14px;
 }
 
-.status-divider { height: 1px; background: var(--rule); }
-
-.status-item-label { display: flex; flex-direction: column; }
+.status-item-label {
+  display: flex;
+  flex-direction: column;
+}
 
 .status-lbl {
   font-size: 0.55rem;
@@ -224,49 +280,11 @@ body {
   line-height: 1.7;
 }
 
-/* Toggle */
-.toggle-switch {
-  width: 44px;
-  height: 24px;
-  border-radius: 100px;
-  background: var(--rule);
-  border: 1px solid #d8d8d8;
-  position: relative;
-  cursor: default;
-  transition: background 0.3s, border-color 0.3s;
-}
-
-.toggle-switch.toggle-on {
-  background: #1a9c3e;
-  border-color: #1a9c3e;
-}
-
-.toggle-switch.toggle-danger {
-  background: var(--danger);
-  border-color: var(--danger);
-}
-
-.toggle-thumb {
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: #cccccc;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s;
-}
-
-.toggle-switch.toggle-on .toggle-thumb,
-.toggle-switch.toggle-danger .toggle-thumb {
-  transform: translateX(20px);
-  background: #ffffff;
-}
-
 /* ── Chart ── */
 .chart-section {
   padding: 24px 36px 28px;
   border-bottom: 1px solid var(--rule);
+  background: #fafafa;
 }
 
 .chart-header {
@@ -286,11 +304,15 @@ body {
 
 .thresh-lbl {
   font-size: 0.6rem;
-  color: var(--warning);
-  opacity: 0.8;
+  color: var(--beige);
+  opacity: 0.9;
 }
 
-#sparkline { width: 100%; height: 80px; display: block; }
+#sparkline {
+  width: 100%;
+  height: 80px;
+  display: block;
+}
 
 /* ── Footer ── */
 .dash-footer {
@@ -300,7 +322,7 @@ body {
   gap: 8px;
   padding: 16px 36px;
   font-size: 0.65rem;
-  color: #bbbbbb;
+  color: var(--charcoal);
   letter-spacing: 0.02em;
 }
 
@@ -308,28 +330,31 @@ body {
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: #cccccc;
+  background: var(--gray);
   flex-shrink: 0;
   transition: background 0.3s;
 }
 
 .freshness-dot.fresh {
-  background: #1a9c3e;
+  background: var(--sgreen);
   animation: pulse-dot 2.5s ease-in-out infinite;
 }
 
 @keyframes pulse-dot {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.25; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
 }
-
-/* ── Danger state ── */
-.dashboard.danger-state #gauge-arc  { stroke: var(--danger); }
-.dashboard.danger-state .gauge-num  { fill: var(--danger); }
 
 /* ── Responsive ── */
 @media (max-width: 680px) {
-  .main-panel { grid-template-columns: 1fr; }
+  .main-panel {
+    grid-template-columns: 1fr;
+  }
 
   .stats-panel {
     flex-direction: row;
@@ -340,23 +365,38 @@ body {
     justify-content: space-around;
   }
 
-  .stat-item { align-items: center; padding: 12px 16px; }
-  .stat-divider { display: none; }
+  .stat-item {
+    align-items: center;
+    padding: 12px 16px;
+  }
+  .stat-divider {
+    display: none;
+  }
 
   .status-panel {
-    flex-direction: row;
-    flex-wrap: wrap;
     border-left: none;
     border-top: 1px solid var(--rule);
     padding: 24px;
-    justify-content: space-around;
+    flex-direction: row;
+    justify-content: center;
+    gap: 16px;
+    align-items: center;
   }
 
-  .status-item { align-items: center; padding: 12px 16px; }
-  .status-divider { display: none; }
+  .status-item {
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+  }
 }
 
 @media (max-width: 460px) {
-  body { padding: 0; align-items: stretch; }
-  .dashboard { min-height: 100vh; border: none; }
+  body {
+    padding: 0;
+    align-items: stretch;
+  }
+  .dashboard {
+    min-height: 100vh;
+    border: none;
+  }
 }

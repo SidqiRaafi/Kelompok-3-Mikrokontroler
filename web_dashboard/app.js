@@ -25,10 +25,13 @@ const mqttOptions = {
 // ── DOM refs ─────────────────────────────────────────────────────────────────
 const $ = (id) => document.getElementById(id);
 
-const statusDot = $("mqtt-status-dot");
-const statusTxt = $("mqtt-status-text");
-const connToggle = $("conn-toggle");
-const leakToggle = $("leak-toggle");
+// Indikator koneksi MQTT
+const connLed = $("conn-led");
+const connText = $("conn-text");
+
+// LED kebocoran
+const leakLed = $("leak-led");
+
 const gasEl = $("gas-value");
 const maxEl = $("max-value");
 const minEl = $("min-value");
@@ -73,20 +76,25 @@ function updateGauge(value) {
   const v = Math.max(0, Math.min(Number(value), ADC_MAX));
   const filled = (v / ADC_MAX) * ARC_LEN;
   const gap = CIRC - filled;
+
   gaugeArc.setAttribute(
     "stroke-dasharray",
     `${filled.toFixed(2)} ${gap.toFixed(2)}`,
   );
 
-  const color =
+  // Arc: Soft Green (aman) → Beige (peringatan) → Merah (bahaya)
+  const arcColor =
     v >= THRESHOLD
-      ? "var(--danger)"
+      ? "#c0392b" // Merah — bahaya
       : v >= Math.round(THRESHOLD * 0.65)
-        ? "var(--warning)"
-        : "var(--safe)";
+        ? "#C9AD93" // Beige — peringatan
+        : "#879A77"; // Soft Green — aman
 
-  gaugeArc.style.stroke = color;
-  gaugeNum.style.fill = color;
+  // Angka: Hitam pada kondisi normal, Merah saat bahaya
+  const numColor = v >= THRESHOLD ? "#c0392b" : "#000000";
+
+  gaugeArc.style.stroke = arcColor;
+  gaugeNum.style.fill = numColor;
   gaugeNum.textContent = String(v);
 }
 
@@ -100,15 +108,16 @@ function drawSparkline() {
   const peak = Math.max(ADC_MAX * 0.5, ...pts);
   const pad = { t: 10, b: 10 };
   const iH = CHART_H - pad.t - pad.b;
+
   const scaleY = (v) => pad.t + (1 - v / peak) * iH;
   const step = chartW / (MAX_HIST - 1);
   const xOf = (i) => i * step;
 
-  // Garis threshold
+  // Garis threshold — Beige putus-putus
   const ty = scaleY(THRESHOLD);
   ctx.save();
   ctx.setLineDash([4, 5]);
-  ctx.strokeStyle = "rgba(243,156,18,0.45)";
+  ctx.strokeStyle = "rgba(201,173,147,0.65)";
   ctx.lineWidth = 1;
   ctx.beginPath();
   ctx.moveTo(0, ty);
@@ -116,15 +125,16 @@ function drawSparkline() {
   ctx.stroke();
   ctx.restore();
 
-  // Warna berdasarkan nilai terkini
   const last = pts[n - 1];
   const isWarn = last >= Math.round(THRESHOLD * 0.65);
   const isDanger = last >= THRESHOLD;
-  const lineRGB = isDanger ? "208,2,27" : isWarn ? "196,127,0" : "17,17,17";
 
-  // Area fill
+  // Warna garis: Hitam (aman) → Taupe (peringatan) → Merah (bahaya)
+  const lineRGB = isDanger ? "192,57,43" : isWarn ? "85,73,64" : "0,0,0";
+
+  // Area fill gradasi
   const grad = ctx.createLinearGradient(0, pad.t, 0, CHART_H);
-  grad.addColorStop(0, `rgba(${lineRGB},0.08)`);
+  grad.addColorStop(0, `rgba(${lineRGB},0.07)`);
   grad.addColorStop(1, `rgba(${lineRGB},0)`);
   ctx.beginPath();
   pts.forEach((v, i) =>
@@ -147,7 +157,7 @@ function drawSparkline() {
   ctx.lineCap = "round";
   ctx.stroke();
 
-  // Titik terkini
+  // Titik data terkini
   ctx.beginPath();
   ctx.arc(xOf(n - 1), scaleY(last), 3.5, 0, Math.PI * 2);
   ctx.fillStyle = `rgb(${lineRGB})`;
@@ -172,7 +182,7 @@ function formatTime(d) {
   });
 }
 
-// ── Handler data ──────────────────────────────────────────────────────────────
+// ── Handler data ───────────────────────────────────────
 function onGasValue(value) {
   history.push(value);
   if (history.length > MAX_HIST) history.shift();
@@ -190,9 +200,9 @@ function onGasValue(value) {
   updateGauge(value);
   drawSparkline();
 
-  // Toggle kebocoran
+  // LED kebocoran: merah menyala+berkedip saat bocor, mati saat aman
   const isLeak = value >= THRESHOLD;
-  leakToggle.className = `toggle-switch ${isLeak ? "toggle-danger" : "toggle-off"}`;
+  leakLed.className = `led-dot led-dot--lg${isLeak ? " led-on-red" : ""}`;
 
   lastUpdEl.textContent = `Diperbarui pukul ${formatTime(new Date())}`;
   markFresh();
@@ -203,9 +213,8 @@ const client = mqtt.connect(BROKER_URL, mqttOptions);
 
 client.on("connect", () => {
   console.log("[MQTT] Terhubung ke HiveMQ Cloud");
-  statusDot.className = "dot connected";
-  statusTxt.textContent = "Terhubung";
-  connToggle.className = "toggle-switch toggle-on";
+  connLed.className = "led-dot led-on-green";
+  connText.textContent = "Terhubung";
   client.subscribe(TOPIC, (err) => {
     if (err) console.error("[MQTT] Gagal subscribe:", err);
     else console.log(`[MQTT] Subscribed ke: ${TOPIC}`);
@@ -229,27 +238,23 @@ client.on("message", (_topic, message) => {
 
 client.on("reconnect", () => {
   console.log("[MQTT] Mencoba reconnect...");
-  statusDot.className = "dot disconnected";
-  statusTxt.textContent = "Menghubungkan\u2026";
-  connToggle.className = "toggle-switch toggle-off";
+  connLed.className = "led-dot"; // LED mati
+  connText.textContent = "Menghubungkan\u2026";
 });
 
 client.on("close", () => {
   console.log("[MQTT] Koneksi tertutup");
-  statusDot.className = "dot disconnected";
-  statusTxt.textContent = "Terputus";
-  connToggle.className = "toggle-switch toggle-off";
+  connLed.className = "led-dot"; // LED mati
+  connText.textContent = "Terputus";
 });
 
 client.on("error", (err) => {
   console.error("[MQTT] Error:", err);
-  statusDot.className = "dot disconnected";
-  statusTxt.textContent = "Error";
-  connToggle.className = "toggle-switch toggle-off";
+  connLed.className = "led-dot";
+  connText.textContent = "Error";
 });
 
 client.on("offline", () => {
-  statusDot.className = "dot disconnected";
-  statusTxt.textContent = "Offline";
-  connToggle.className = "toggle-switch toggle-off";
+  connLed.className = "led-dot";
+  connText.textContent = "Offline";
 });
