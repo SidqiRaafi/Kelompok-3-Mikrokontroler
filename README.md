@@ -97,6 +97,19 @@ https://github.com/SidqiRaafi/Kelompok-3-Mikrokontroler/blob/11510bfc183ed84b13a
 <br/>
 
   ## Implementasi Web Interface
+  <div align="justify">
+  <p>Tahap ini berfokus pada implementasi antarmuka web interaktif dan transisi penggunaan broker MQTT ke HiveMQ Cloud untuk meningkatkan keamanan. Pada sisi mikrokontroler (ESP32), komunikasi kini menggunakan koneksi terenkripsi melalui WiFiClientSecure (port 8883), yang mengharuskan peningkatan alokasi memori (stack size) menjadi 8192 pada MQTTTask. Data sensor MQ2 yang dikemas dalam format JSON—berisi nilai analog (raw), tegangan, dan status keamanan—tetap dipublikasikan ke topik gasleak/data dengan mempertahankan struktur manajemen antrean (queue) dan prioritas task FreeRTOS yang sudah dibangun sebelumnya.
+
+Di sisi frontend, dashboard web dikembangkan menggunakan HTML, CSS, dan JavaScript dengan memanfaatkan pustaka MQTT.js untuk berlangganan (subscribe) ke broker melalui WebSockets (port 8884). Antarmuka ini dirancang secara responsif untuk memvisualisasikan pembaruan data secara real-time melalui indikator gauge berbasis SVG, grafik riwayat sparkline menggunakan Canvas, serta indikator status LED dinamis yang otomatis berkedip merah jika nilai gas melampaui ambang batas 3000. Implementasi ini berhasil menyempurnakan prototipe dari sekadar alarm peringatan lokal menjadi sistem pemantauan IoT end-to-end yang komprehensif.
+</p>
+
+  </div>
+  <div align="center">
+    
+  <img src="docs/img/Kondisi Aman.png" alt="Kondisi Aman" width="720"/><br/>**Kondisi Aman**<br/><br/>
+  
+  <img src="docs/img/Kondisi Mendeteksi Kebocoran Gas.png" alt="Kondisi Mendeteksi Kebocoran" width="720"/><br/>**Kondisi Gauge dan LED ketika Mendeteksi Kebocoran Gas**<br/><br/>  
+  </div>
   <br/><br/><br/>
 <br/>
   ## Final Product
