@@ -17,42 +17,6 @@
 #include "freertos/task.h"
 #include "freertos/queue.h"
 #include <WiFi.h>
-#include <PubSubClient.h>
-
-// WiFi & MQTT config 
-#define WIFI_SSID     "Wokwi-GUEST"
-#define WIFI_PASS     ""
-#define MQTT_BROKER   "broker.emqx.io"
-#define MQTT_PORT     1883
-#define MQTT_TOPIC    "gasleak/data"
-#define MQTT_CLIENT   "esp32-gasleak-01"
-
-// Pin & sensor config 
-#define MQ2_AO_PIN    34
-#define BUZZER_PIN    18
-#define LED_GREEN     17
-#define LED_RED       16
-
-#define THRESHOLD     3000
-#define WARMUP_MS     5000
-#define BAUD_RATE     115200
-
-// Shared data struct
-struct GasData {
-  int   raw;
-  float voltage;
-  bool  detected;
-};
-
-// Handles
-QueueHandle_t gasQueue;
-WiFiClient    wifiClient;
-PubSubClient  mqttClient(wifiClient);
-
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/queue.h"
-#include <WiFi.h>
 #include <WiFiClientSecure.h> // WAJIB untuk HiveMQ Cloud
 #include <PubSubClient.h>
 
