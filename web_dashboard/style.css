@@ -190,7 +190,7 @@ body {
 } /* Taupe   — nilai puncak */
 .stat-min {
   color: var(--sgreen);
-} /* Soft Green — nilai teredah */
+} /* Soft Green — nilai terendah */
 .stat-current {
   color: var(--ink);
 } /* Black   — nilai saat ini */
