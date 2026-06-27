@@ -78,7 +78,9 @@ https://github.com/SidqiRaafi/Kelompok-3-Mikrokontroler/blob/11510bfc183ed84b13a
   
   <p align="center">
   <img width="400" alt="WhatsApp Image 2026-06-25 at 13 52 29" src="https://github.com/user-attachments/assets/fdfb0c93-e11a-49ee-9263-04355d1556bc" />
-  <img width="400" alt="WhatsApp Image 2026-06-25 at 13 52 29 (1)" src="https://github.com/user-attachments/assets/275c4496-9431-46e7-b177-66db961daf5b" />
+  <img width="400" alt="WhatsApp Image 2026-06-25 at 13 52 29 (1)" src="https://github.com/user-attachments/assets/275c4496-9431-46e7-b177-66db961daf5b" /> <br/>
+    
+  **Implementasi menggunakan hardware**
 
   <div align="justify">
     
@@ -106,20 +108,26 @@ Di sisi frontend, dashboard web dikembangkan menggunakan HTML, CSS, dan JavaScri
   </div>
   <div align="center">
     
-  <img src="docs/img/Kondisi Aman.png" alt="Kondisi Aman" width="720"/><br/>**Kondisi Aman**<br/><br/>
+  <img src="docs/img/Kondisi Aman.png" alt="Kondisi Aman" width="720"/><br/>**Kondisi Aman**<br/>
   
-  <img src="docs/img/Kondisi Mendeteksi Kebocoran Gas.png" alt="Kondisi Mendeteksi Kebocoran" width="720"/><br/>**Kondisi Gauge dan LED ketika Mendeteksi Kebocoran Gas**<br/><br/>  
+  <img src="docs/img/Kondisi Mendeteksi Kebocoran Gas.png" alt="Kondisi Mendeteksi Kebocoran" width="720"/><br/>**Kondisi Gauge dan LED ketika Mendeteksi Kebocoran Gas**<br/>
   </div>
-  <br/><br/><br/>
 <br/>
-  ## Final Product
-  <br/><br/><br/>
-<br/>
+
   ## Kesimpulan
-  <br/><br/><br/>
+  <div align="justify">  
+  <p>Proyek ini berhasil membangun sistem deteksi kebocoran gas secara end-to-end, mulai dari pembacaan sensor sampai ke visualisasi data di dashboard web secara realtime. Penggunaan FreeRTOS terbukti lebih efektif dalam memisahkan tanggung jawab tiap proses seperti GasTask yang memastikan alarm tetap responsif tanpa terganggu oleh latensi jaringan, dan MQTTTask yang menangani komunikasi ke broker secara mandiri di latar belakang.
+
+Secara keseluruhan, proyek ini membuktikan bahwa ESP32 dengan FreeRTOS mampu menjadi fondasi yang kusy untuk sistem IoT berlapis, dari deteksi fisik, manajemen task, komunikasi MQTT, hingga antarmuka pengguna berbasis web dengan kemampuan monitoring secara realtime. Ke depannya, sistem dapat ditingkatkan dengan menambahkan autentikasi berbasis sertifikat (mTLS) dan penyimpanan data historis di sisi server menggunakan database untuk analisis jangka panjang.</p>
+</div>
 <br/>
+
   ## Kontributor
+  
+  <div align="justify">
+    
 - [@Sidqi Raafi Al Fauzan](https://github.com/SidqiRaafi) - 23552011395
 - [@Muhammad Rizal Afrizal](https://github.com/Afrizal8) - 23552011376 
 - [@Ardika Nurdiansyah](https://github.com/ardikaanurdiansyah) - 23552011311
+</div>
 </div>
