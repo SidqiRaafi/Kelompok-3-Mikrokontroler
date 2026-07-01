@@ -79,10 +79,16 @@ https://github.com/SidqiRaafi/Kelompok-3-Mikrokontroler/blob/11510bfc183ed84b13a
   <p align="center">
   <img width="400" alt="WhatsApp Image 2026-06-25 at 13 52 29" src="https://github.com/user-attachments/assets/fdfb0c93-e11a-49ee-9263-04355d1556bc" />
   <img width="400" alt="WhatsApp Image 2026-06-25 at 13 52 29 (1)" src="https://github.com/user-attachments/assets/275c4496-9431-46e7-b177-66db961daf5b" /> <br/>
-    
-  **Implementasi menggunakan hardware**
 
   <div align="justify">
+    
+  ### Video Demo
+  
+  <div align="center">
+  <a href="https://youtube.com/shorts/ETv5DF2IMjA">
+    <img src="https://img.youtube.com/vi/ETv5DF2IMjA/0.jpg" alt="Video Demo" width="80%">
+  </a>
+  </div>
     
   ### Hasil Pengujian
   - Kondisi normal: LED hijau menyala.
@@ -91,6 +97,7 @@ https://github.com/SidqiRaafi/Kelompok-3-Mikrokontroler/blob/11510bfc183ed84b13a
   - Pembacaan sensor gas MQ2.
   - Pengelolaan task menggunakan FreeRTOS.
   - Pengiriman data sensor ke broker MQTT.
+  - Data sensor berhasil ditampilkan melalui Web Interface.
   - Pengendalian LED indikator dan buzzer sebagai alarm.
 
   ### Code Snippet
